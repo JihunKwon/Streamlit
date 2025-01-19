@@ -22,19 +22,19 @@ st.markdown("""
 ## 実行例
  """)
 
-increase = st.number_input("検査数増加分（件）", min_value=0, max_value=None,
+increase_per_day = st.number_input("検査数増加分（件）", min_value=0, max_value=None,
                            value=3, step=1, help="導入時の検査数増加分（件）")
-exam_time_new = st.number_input("検査時間（分）", min_value=0.0,
-                                max_value=None, value=25.0, step=0.1, help="導入時の検査時間（分）")
-wait = st.number_input("検査待ち日数（日）", min_value=0.0,
-                       max_value=None, value=20.0, step=1.0, help="検査待ち日数（日）")
+exam_time_new = st.number_input("検査時間（分）", min_value=0,
+                                max_value=None, value=25, step=1, help="導入時の検査時間（分）")
+wait = st.number_input("検査待ち日数（日）", min_value=0,
+                       max_value=None, value=20, step=1, help="検査待ち日数（日）")
 field = st.selectbox(
     "静磁場強度（T）",
     ("1.5", "3.0"),
 )
 field = float(field)
-exam_time_old = st.number_input("検査枠(従来)（分）", min_value=0.0,
-                                max_value=None, value=30.0, step=0.1, help="現在の検査時間（分）")
+exam_time_old = st.number_input("検査枠(従来)（分）", min_value=0,
+                                max_value=None, value=30, step=1, help="現在の検査時間（分）")
 MR_people = st.number_input("MR担当者数（人）", min_value=1,
                             max_value=None, value=2, step=1)
 
@@ -61,10 +61,19 @@ st.write(f"稼働時間: {total_hours:.1f} 時間")
 
 wait_exam = st.number_input("待ち検査数（件）", min_value=1,
                             max_value=None, value=360, step=1)
-check_3T = st.checkbox(
-    '撮像点数(3T)(1600点)', value=False, label_visibility="visible")
-check_15T = st.checkbox(
-    '撮像点数(1.5T)(1330点)', value=False, label_visibility="visible")
+
+# Depending on the field strength selected above, chose which to pre-selected
+if field == 1.5:
+    check_3T = st.checkbox(
+        '撮像点数(3T)(1600点)', value=False, label_visibility="visible")
+    check_15T = st.checkbox(
+        '撮像点数(1.5T)(1330点)', value=True, label_visibility="visible")
+elif field == 3.0:
+    check_3T = st.checkbox(
+        '撮像点数(3T)(1600点)', value=True, label_visibility="visible")
+    check_15T = st.checkbox(
+        '撮像点数(1.5T)(1330点)', value=False, label_visibility="visible")
+
 check_computer_diagnosis = st.checkbox(
     'コンピューター断層診断料(450点)', value=False, label_visibility="visible")
 check_kasan1 = st.checkbox(
@@ -118,21 +127,22 @@ salary = st.number_input("診療放射線技師の時給（円）", min_value=10
 
 if st.button("Run"):
     # 年間増収
-    Zoshu = increase * total_points * 10 * weekday
-    st.write(f'年間増収は{Zoshu}円です')
+    Zoshu = increase_per_day * total_points * 10 * weekday
+    st.write(f'年間増収は{Zoshu:,}円です')
 
     # 検査終了時間はXX時間短くなります
     Delta_time_per_exam = exam_time_old - exam_time_new
     Delta_time_per_day = Delta_time_per_exam * exam_per_day
+    #st.write(df.style.format("{:.2}"))
     st.write(f'検査終了時間は{Delta_time_per_day}分短くなります')
 
     # 検査待ちはXX日でなくなります
-    Day_till_zero = wait_exam / increase
+    Day_till_zero = wait_exam / increase_per_day
     st.write(f'検査待ちは{Day_till_zero}日でなくなります')
 
     # 残業代(年あたり)XX円削減できます
     Reduce = salary * MR_people * weekday * Delta_time_per_day / 60
-    st.write(f'残業代(年あたり){Reduce}円削減できます')
+    st.write(f'残業代(年あたり){Reduce:,}円削減できます')
 
     year = np.arange(5)+1
     Zoshu_year = np.zeros([5])
