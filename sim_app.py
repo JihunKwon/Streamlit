@@ -22,8 +22,60 @@ st.markdown("""
 ## 実行例
  """)
 
+st.markdown("""
+<style>
+    .stNumberInput input[aria-label="検査数増加分（件）"] {
+        background-color: #C9DEFC;
+        color: #000000;
+    }
+    .stNumberInput input[aria-label="検査時間（分）"] {
+        background-color: #C9DEFC;
+        color: #000000;
+    }
+    .stNumberInput input[aria-label="検査待ち日数（日）"] {
+        background-color: #FEDDE1;
+        color: #000000;
+            
+    .stNumberInput input[aria-label="検査枠(従来)（分）"] {
+        background-color: #FEDDE1;
+        color: #000000;
+    }
+    .stNumberInput input[aria-label="MR担当者数（人）"] {
+        background-color: #FEDDE1;
+        color: #000000;
+    }
+    .stNumberInput input[aria-label="1日あたりの検査枠数（件）"] {
+        background-color: #FEDDE1;
+        color: #000000;
+    }
+
+    /* Target the entire time input container */
+    .stTimeInput > div[data-baseweb="time-picker"] {
+        background-color: #FEDDE1;
+    }
+    
+    /* Style the input field */
+    .stTimeInput input {
+        background-color: #FEDDE1 !important;
+        color: white !important;
+        border-color: #000000 !important;
+    }
+    
+    /* Style the time picker dropdown */
+    div[data-baseweb="popover"] {
+        background-color: black !important;
+    }
+    
+    div[data-baseweb="select"] * {
+        background-color: #FEDDE1 !important;
+        color: #000000 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 increase_per_day = st.number_input("検査数増加分（件）", min_value=0, max_value=None,
-                           value=3, step=1, help="導入時の検査数増加分（件）")
+                                   value=3, step=1, help="導入時の検査数増加分（件）")
 exam_time_new = st.number_input("検査時間（分）", min_value=0,
                                 max_value=None, value=25, step=1, help="導入時の検査時間（分）")
 wait = st.number_input("検査待ち日数（日）", min_value=0,
@@ -133,11 +185,11 @@ if st.button("Run"):
     # 検査終了時間はXX時間短くなります
     Delta_time_per_exam = exam_time_old - exam_time_new
     Delta_time_per_day = Delta_time_per_exam * exam_per_day
-    #st.write(df.style.format("{:.2}"))
+    # st.write(df.style.format("{:.2}"))
     st.write(f'検査終了時間は{Delta_time_per_day}分短くなります')
 
     # 検査待ちはXX日でなくなります
-    Day_till_zero = wait_exam / increase_per_day
+    Day_till_zero = wait * exam_per_day / increase_per_day
     st.write(f'検査待ちは{Day_till_zero}日でなくなります')
 
     # 残業代(年あたり)XX円削減できます
