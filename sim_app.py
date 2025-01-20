@@ -35,6 +35,11 @@ st.markdown("""
     .stNumberInput input[aria-label="検査待ち日数（日）"] {
         background-color: #FEDDE1;
         color: #000000;
+    }
+    .stSelectbox div[data-baseweb="select"] > div:first-child {
+    background-color: #FEDDE1;
+    border-color: #000000;
+    }
             
     .stNumberInput input[aria-label="検査枠(従来)（分）"] {
         background-color: #FEDDE1;
