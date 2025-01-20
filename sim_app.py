@@ -28,6 +28,7 @@ exam_time_new = st.number_input("検査時間（分）", min_value=0,
                                 max_value=None, value=25, step=1, help="導入時の検査時間（分）")
 wait = st.number_input("検査待ち日数（日）", min_value=0,
                        max_value=None, value=20, step=1, help="検査待ち日数（日）")
+
 field = st.selectbox(
     "静磁場強度（T）",
     ("1.5", "3.0"),
@@ -58,9 +59,8 @@ total_hours = time_diff.total_seconds() / 3600  # Convert to decimal hours
 # Display the result
 st.write(f"稼働時間: {total_hours:.1f} 時間")
 
-
-wait_exam = st.number_input("待ち検査数（件）", min_value=1,
-                            max_value=None, value=360, step=1)
+# Display the waiting time
+st.write(f"待ち検査数: {wait * exam_per_day} （件）")
 
 # Depending on the field strength selected above, chose which to pre-selected
 if field == 1.5:
