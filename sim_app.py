@@ -24,11 +24,11 @@ st.markdown("""
 
 st.markdown("""
 <style>
-    .stNumberInput input[aria-label="検査数増加分（件）"] {
+    .stNumberInput input[aria-label="【予測】検査数増加分（件）"] {
         background-color: #C9DEFC;
         color: #000000;
     }
-    .stNumberInput input[aria-label="検査時間（分）"] {
+    .stNumberInput input[aria-label="【予測】検査時間（分）"] {
         background-color: #C9DEFC;
         color: #000000;
     }
@@ -79,9 +79,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-increase_per_day = st.number_input("検査数増加分（件）", min_value=0, max_value=None,
+increase_per_day = st.number_input("【予測】検査数増加分（件）", min_value=0, max_value=None,
                                    value=3, step=1, help="導入時の検査数増加分（件）")
-exam_time_new = st.number_input("検査時間（分）", min_value=0,
+exam_time_new = st.number_input("【予測】検査時間（分）", min_value=0,
                                 max_value=None, value=25, step=1, help="導入時の検査時間（分）")
 wait = st.number_input("検査待ち日数（日）", min_value=0,
                        max_value=None, value=20, step=1, help="検査待ち日数（日）")
@@ -185,21 +185,21 @@ salary = st.number_input("診療放射線技師の時給（円）", min_value=10
 if st.button("Run"):
     # 年間増収
     Zoshu = increase_per_day * total_points * 10 * weekday
-    st.write(f'年間増収は{Zoshu:,}円です')
+    st.write(f'**年間増収は{Zoshu:,}円です**')
 
     # 検査終了時間はXX時間短くなります
     Delta_time_per_exam = exam_time_old - exam_time_new
     Delta_time_per_day = Delta_time_per_exam * exam_per_day
     # st.write(df.style.format("{:.2}"))
-    st.write(f'検査終了時間は{Delta_time_per_day}分短くなります')
+    st.write(f'**検査終了時間は{Delta_time_per_day}分短くなります**')
 
     # 検査待ちはXX日でなくなります
     Day_till_zero = wait * exam_per_day / increase_per_day
-    st.write(f'検査待ちは{Day_till_zero}日でなくなります')
+    st.write(f'**検査待ちは{Day_till_zero}日でなくなります**')
 
     # 残業代(年あたり)XX円削減できます
     Reduce = salary * MR_people * weekday * Delta_time_per_day / 60
-    st.write(f'残業代(年あたり){Reduce:,}円削減できます')
+    st.write(f'**残業代(年あたり){Reduce:,}円削減できます**')
 
     year = np.arange(5)+1
     Zoshu_year = np.zeros([5])
