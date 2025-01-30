@@ -185,21 +185,21 @@ salary = st.number_input("診療放射線技師の時給（円）", min_value=10
 if st.button("Run"):
     # 年間増収
     Zoshu = increase_per_day * total_points * 10 * weekday
-    st.write(f'年間増収は**{Zoshu:,}**円です')
+    st.write(f'年間増収は**{Zoshu:,}円**です')
 
     # 検査終了時間はXX時間短くなります
     Delta_time_per_exam = exam_time_old - exam_time_new
     Delta_time_per_day = Delta_time_per_exam * exam_per_day
     # st.write(df.style.format("{:.2}"))
-    st.write(f'検査終了時間は**{Delta_time_per_day}**分短くなります')
+    st.write(f'検査終了時間は**{Delta_time_per_day}分**短くなります')
 
     # 検査待ちはXX日でなくなります
     Day_till_zero = wait * exam_per_day / increase_per_day
-    st.write(f'検査待ちは**{Day_till_zero}**日でなくなります')
+    st.write(f'検査待ちは**{Day_till_zero}日**でなくなります')
 
     # 残業代(年あたり)XX円削減できます
     Reduce = salary * MR_people * weekday * Delta_time_per_day / 60
-    st.write(f'残業代(年あたり)**{Reduce:,}**円削減できます')
+    st.write(f'残業代(年あたり)**{Reduce:,}円**削減できます')
 
     year = np.arange(5)+1
     Zoshu_year = np.zeros([5])
