@@ -191,7 +191,7 @@ if st.button("Run"):
     Delta_time_per_exam = exam_time_old - exam_time_new
     Delta_time_per_day = Delta_time_per_exam * exam_per_day
     # st.write(df.style.format("{:.2}"))
-    st.write(f'**検査終了時間は{Delta_time_per_day}分短くなります**')
+    st.write(f'検査終了時間は**{Delta_time_per_day}**分短くなります')
 
     # 検査待ちはXX日でなくなります
     Day_till_zero = wait * exam_per_day / increase_per_day
